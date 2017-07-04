@@ -218,8 +218,8 @@ function roomSelected(person, controller, bot, convo, method, opt, rooms) {
                             else {
 
                                 var opts = room.details.poll.options.split(";");
-                                var voteQ = "";
-                                voteQ += "What is your answer?  \nReply with the number i.e. `1`, `2` etc. or `quit` to abort  \n  \n";
+                                var voteQ = "**"+room.details.poll.question +"**  \n";
+                                voteQ += "Reply with the number i.e. `1`, `2` etc. or `quit` to abort  \n  \n";
                                 for(var idt= 0; idt<opts.length; idt++) {
                                     voteQ += (idt+1) + ". " + opts[idt] +"  \n";
                                 }

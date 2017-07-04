@@ -34,7 +34,7 @@ module.exports = function(controller) {
 
                             + "**Course Resources**  \n"
                             + "-`set/delete resources`: To set or delete a link of course resources  \n"
-                            + "-`website`: To get the link of course resources  \n"
+                            + "-`resources`: To get the link of course resources  \n"
 
                             + "**Timezone (Settings)**  \n"
                             + "-`set timezone`: To set timezone, all queries and reminders will fire according to this  \n"
@@ -81,7 +81,7 @@ module.exports = function(controller) {
                         + "-`syllabus`: To get the link of syllabus   \n"
 
                         + "**Course Resources**  \n"
-                        + "-`website`: To get the link of course resources  \n"
+                        + "-`resources`: To get the link of course resources  \n"
 
                         + "**Timezone (Settings)**  \n"
                         + "-`timezone`: To get the currently set timezone  \n"
