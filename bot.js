@@ -44,7 +44,9 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
   require("./skills/" + file)(controller);
 });
 
-
+controller.hears(/./, 'direct_message', function(bot, message) {
+    bot.reply(message, "Didn't get you. Use `help` to see a list of available commands please.");
+});
 
 
 // This captures and evaluates any message sent to the bot as a DM
