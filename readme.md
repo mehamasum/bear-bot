@@ -1,54 +1,31 @@
-# Botkit Starter Kit for Cisco Spark
-
-This repo contains everything you need to get started building a bot with Botkit and Botkit Studio!
-
-[Botkit Studio](https://studio.botkit.ai/signup?code=ciscostarter) is a set tools that adds capabilities
-to the open source Botkit library by offering hosted GUI interfaces for script
-management and action trigger definition. Botkit Studio is built by the company
-that created and maintains the open source Botkit library, [Howdy.](https://howdy.ai)
-
-While Botkit Studio is *not required* to build a bot using Botkit, we highly recommend it as your bot will be easier to manage, customize and extend.
-
-### Instant Start
-
-[Remix this project on Glitch](https://glitch.com/edit/#!/import/github/howdyai/botkit-starter-ciscospark)
-
-[Deploy to Heroku](https://heroku.com/deploy?template=https://github.com/howdyai/botkit-starter-ciscospark/master)
-
+# Bear: The Classroom Bot for Cisco Spark
 
 ### Get Started
 
-Clone this repository:
+1. Clone this repository:  
+`git clone https://github.com/mehamasum/bear-bot`
 
-`git clone https://github.com/howdyai/botkit-starter-ciscospark.git`
-
-Install dependencies, including [Botkit](https://github.com/howdyai/botkit):
-
+2. Install dependencies:  
 ```
-cd botkit-starter-ciscospark
+cd bear-bot
 npm install
 ```
-
-Get a Cisco Spark access tokens [as described here](https://github.com/howdyai/botkit/blob/master/docs/readme-ciscospark.md#getting-started)
-
-Get a Botkit Studio token [from your Botkit developer account](https://studio.botkit.ai/)
-
-Update the `.env` file with your newly acquired tokens.
-
-Launch your bot application by typing:
-
+3. Write a `.env` file with the following:  
+```
+access_token=YOUR_CISCO_SPARK_ACCESS_TOKEN  
+public_address=YOUR_PUBLIC_ADDRESS_WITH_HTTPS  
+secret=YOUR_SECRET_STRING  
+PORT=YOUR_PORT_NUMBER  
+```
+4. Launch your bot application by typing:  
 `node .`
-
-Cisco Spark requires your application be available at an SSL-enabled endpoint. To expose an endpoint during development, we recommend using [localtunnel.me](http://localtunnel.me) or [ngrok](http://ngrok.io), either of which can be used to temporarily expose your bot to the internet. Once stable and published to the real internet, use nginx or another web server to provide an SSL-powered front end to your bot application.
-
-Continue your journey to becoming a champion botmaster by [reading the Botkit Studio SDK documentation here.](https://github.com/howdyai/botkit/blob/master/docs/readme-studio.md)
 
 
 ### Extend This Bot
 
-This repo is designed to provide developers a robust starting point for building a custom bot. Included in the code are a set of sample bot "skills" that illustrate various aspects of the Botkit SDK features.  Once you are familiar with how Botkit works, you may safely delete all of the files in the `skills/` subfolder.
+This bot is built on top of the starter pack of [bot-kit](https://github.com/howdyai/botkit) for [Cisco Spark](https://github.com/howdyai/botkit/blob/master/docs/readme-ciscospark.md)
 
-Developers will build custom features as modules that live in the `skills/` folder. The main bot application will automatically include any files placed there.
+All the actions this bot can perform are in `skills/` folder. The main bot application will automatically include any files placed there.
 
 A skill module should be in the format:
 
