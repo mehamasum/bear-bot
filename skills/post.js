@@ -2,6 +2,7 @@
  * Created by mehamasum on 6/30/2017.
  */
 const TAG = "meha, post.js: ";
+var wordfilter = require('wordfilter');
 
 module.exports = function(controller) {
     controller.hears(['post'], 'direct_message', function(bot, message) {
@@ -88,10 +89,13 @@ function roomSelected(controller, bot, convo, method, opt, rooms) {
                             // this is the post string
 
                             // post
-                            bot.reply({channel: room.id}, '**Anonymous Student:**  \n'+ response.text);
+                            if (!wordfilter.blacklisted(response.text)) {
+                                bot.reply({channel: room.id}, '**Anonymous Student:**  \n'+ response.text);
+                                convo.say('Posted anonymously!');
+                            } else {
+                                convo.say('Post blocked due to offensive language');
+                            }
 
-                            // done
-                            convo.say('Posted anonymously!');
                             convo.next();
                         }
                     }
