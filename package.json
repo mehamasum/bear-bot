@@ -15,7 +15,10 @@
     "node-env-file": "^0.1.8",
     "request": "^2.79.0",
     "wordfilter": "^0.2.6",
-    "tiny-worker": "^2.1.1"
+    "tiny-worker": "^2.1.1",
+    "mammoth": "^1.4.1",
+    "randomstring": "^1.1.5",
+    "officegen": "^0.4.5"
   },
   "devDependencies": {},
   "repository": {

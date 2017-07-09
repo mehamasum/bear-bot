@@ -62,6 +62,7 @@ module.exports = function(controller) {
 
                             + "**Poll**  \n"
                             + "-`set/delete poll`: For in-class questions or polls  \n"
+                            + "-`poll`: To view the active poll  \n"
                             + "-`result`: To get result of an active poll  \n"
                         );
                         break;
