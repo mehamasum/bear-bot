@@ -62,6 +62,8 @@ module.exports = function(controller) {
 
                             + "**Poll**  \n"
                             + "-`set/delete poll`: For in-class questions or polls  \n"
+                            + "-`set poll` with `.docx` file attached: Create poll from file  \n"
+                            + "-`set poll with tex`: Create poll with Latex equations  \n"
                             + "-`poll`: To view the active poll  \n"
                             + "-`result`: To get result of an active poll  \n"
                         );
