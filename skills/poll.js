@@ -419,7 +419,8 @@ function roomSelectedForFileParsing(person, controller, bot, convo, method, opt,
                 request(options).pipe(fs.createWriteStream(filename)).on('close', function(){
                     try {
                         mammoth.extractRawText({path: filename})
-                            .then(function(result){
+                            .then(
+                                function(result) {
                                 var text = result.value.trim(); // The raw text
                                 var messages = result.messages;
 
@@ -461,6 +462,8 @@ function roomSelectedForFileParsing(person, controller, bot, convo, method, opt,
                                     convo.say("Poll set");
                                 }
 
+                                convo.next();
+
                                 fs.unlink(filename, function (err) {
                                     if (err) {
                                         console.log(TAG+ err.toString());
@@ -471,8 +474,8 @@ function roomSelectedForFileParsing(person, controller, bot, convo, method, opt,
                     }
                     catch (e) {
                         convo.say("Not a valid `.docx` file!");
+                        convo.next();
                     }
-                    convo.next();
                 });
 
             }
