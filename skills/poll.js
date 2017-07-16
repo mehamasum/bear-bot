@@ -432,7 +432,8 @@ function roomSelectedForFileParsing(person, controller, bot, convo, method, opt,
                                 // atleast question text and a option and last digit
                                 if(n<=2) {
                                     //todo; messgae undefined bug
-                                    convo.say("Not a valid `.docx` file!");
+                                    //convo.say("Not a valid `.docx` file!");
+                                    bot.reply({toPersonId: person}, "Not a valid `.docx` file!");
                                 }
                                 else {
                                     var texFile = false;
