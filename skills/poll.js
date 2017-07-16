@@ -457,8 +457,8 @@ function roomSelectedForFileParsing(person, controller, bot, convo, method, opt,
                                     bot.reply({channel: room.id}, 'New poll!  \nType `poll` in a **personal conversation** to respond');
 
                                     // done
-                                    var voteQ = "Poll set";
-                                    convo.say(voteQ);
+                                    // var voteQ = "Poll set";
+                                    convo.say("Poll set");
                                 }
 
                                 fs.unlink(filename, function (err) {
