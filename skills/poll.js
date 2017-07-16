@@ -472,6 +472,7 @@ function roomSelectedForFileParsing(person, controller, bot, convo, method, opt,
                     catch (e) {
                         convo.say("Not a valid `.docx` file!");
                     }
+                    convo.next();
                 });
 
             }
