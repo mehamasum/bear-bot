@@ -343,7 +343,7 @@ function roomSelected(person, controller, bot, convo, method, opt, rooms) {
                                             var vote = parseInt(response.text);
                                             if (vote >= 1 && vote <= opts.length) {
 
-                                                convo.say("Answer recorded!");
+                                                convo.say("Answer recorded 👍");
 
                                                 q.voters.push(person);
 

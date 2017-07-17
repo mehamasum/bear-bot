@@ -180,7 +180,7 @@ function form(controller, bot, convo, room, idx, due) {
                                                     offset_str = room.details.timezone;
                                                 }
                                                 var btns = Util.buildCalendarNew(room.details.title, name, description, time, offset_str);
-                                                notif += "  \n"+ btns[0]+" "+ btns[1]+" "+btns[2]+" "+ btns[3]+"  \n  \n";
+                                                notif += "  \n📆 "+ btns[0]+" "+ btns[1]+" "+btns[2]+" "+ btns[3]+"  \n  \n";
                                                 bot.reply({channel: room.id}, notif);
                                             }
                                         });

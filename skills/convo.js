@@ -23,7 +23,7 @@ module.exports = function(controller) {
                 // assuming data is not in my db ->
                 // save the room data marked as inactive, save persons in the room
 
-                bot.reply(message, 'Hello there. I am Bear, the classroom bot!  \n'
+                bot.reply(message, 'Hello 👋  \nI am Bear, the classroom bot!  \n'
                     + 'Type `hi` in a **direct message** to talk to me');
 
                 var creatorId = details.creatorId;
@@ -43,6 +43,7 @@ module.exports = function(controller) {
 
                         var person = element.personId;
                         var name = element.personDisplayName;
+                        var personEmail = element.personEmail;
 
                         if (person == botId) return; // if bot iteself -> skip
 
@@ -51,13 +52,14 @@ module.exports = function(controller) {
                             teacher = true;
                         }
 
-                        room_members.push({id: person, personDisplayName: name, teacher: teacher});
+                        room_members.push({id: person, personEmail: personEmail, personDisplayName: name, teacher: teacher});
 
                         controller.storage.users.get(person, function (err, user) {
                             if (!user) {
                                 user = {
                                     id: person,
                                     details: {
+                                        personEmail: personEmail,
                                         personDisplayName: name,
                                         rooms: [{id: roomId, title: title, teacher: teacher}]
                                     }
@@ -111,6 +113,7 @@ module.exports = function(controller) {
         var newcomerId = message.original_message.data.personId;
         var name = message.original_message.data.personDisplayName;
         var roomId = message.original_message.data.roomId;
+        var personEmail =  message.original_message.data.personEmail;
 
 
         roomAPI.getRoomDetails(roomId, function (err, details) {
@@ -123,7 +126,7 @@ module.exports = function(controller) {
             }
             if (details.type === "group") {
 
-                bot.reply(message, 'Hello, <@personId:'+newcomerId+'|'+name+'>  \n'
+                bot.reply(message, 'Hello, <@personId:'+newcomerId+'|'+name+'> 👋  \n'
                     + 'Type `hi` in a **direct message** to talk to me');
 
                 // save user
@@ -132,6 +135,7 @@ module.exports = function(controller) {
                         user = {
                             id: newcomerId,
                             details: {
+                                personEmail: personEmail,
                                 personDisplayName: name,
                                 rooms: [{id: roomId, title: title,  teacher: false}]
                             }
@@ -150,7 +154,7 @@ module.exports = function(controller) {
 
                 controller.storage.channels.get(roomId, function (err, room) {
                     if (room) {
-                        room.details.members.push({id: newcomerId, personDisplayName: name, teacher: false});
+                        room.details.members.push({id: newcomerId, personEmail: personEmail, personDisplayName: name, teacher: false});
 
                         controller.storage.channels.save(room, function (err, id) {
                             if (err) console.error(TAG+ "controller.storage.channels.save not working");
