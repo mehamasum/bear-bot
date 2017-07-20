@@ -48,34 +48,179 @@ controller.hears(/./, 'direct_message', function(bot, message) {
     bot.reply(message, "Didn't get you. Use `help` to see a list of available commands please.");
 });
 
+// notifier
+var Worker = require("tiny-worker");
+var worker = new Worker(function () {
+    console.log("pre");
+    self.onmessage = function (ev) {
+        var https = require("https");
+        var token = process.env.access_token;
+        var fs = require("fs");
+        var db = require("path").join(__dirname, "db/json_db/channels");
 
-// This captures and evaluates any message sent to the bot as a DM
-// or sent to the bot in the form "@bot message" and passes it to
-// Botkit Studio to evaluate for trigger words and patterns.
-// If a trigger is matched, the conversation will automatically fire!
-// You can tie into the execution of the script using the functions
-// controller.studio.before, controller.studio.after and controller.studio.validate
-/*if (process.env.studio_token) {
-    controller.on('direct_message,direct_mention', function(bot, message) {
-        if (message.text) {
-            controller.studio.runTrigger(bot, message.text, message.user, message.channel).then(function(convo) {
-                if (!convo) {
-                    // no trigger was matched
-                    controller.studio.run(bot, 'fallback', message.user, message.channel);
-                } else {
-                    // set variables here that are needed for EVERY script
-                    // use controller.studio.before('script') to set variables specific to a script
-                    convo.setVar('current_time', new Date());
-                }
-            }).catch(function(err) {
-                if (err) {
-                    bot.reply(message, 'I experienced an error with a request to Botkit Studio: ' + err);
-                    debug('Botkit Studio: ', err);
-                }
+        setInterval(function () {
+            fs.readdirSync(db).forEach(function(file) {
+                //console.log(file);
+                fs.readFile("./db/json_db/channels/"+file, 'utf8', function (err, data) {
+
+                    var room = JSON.parse(data);
+
+                    if (err) {
+                        return console.log(err);
+                    }
+
+                    var notice = "Reminder ⏰  \n";
+                    var delever = false;
+                    var offset = 0, offset_str=null;
+                    if(room.details.timezone) {
+                        offset_str = room.details.timezone;
+                        offset = parseFloat(room.details.timezone);
+                    }
+
+                    // create Date object for current location
+                    var d = new Date();
+
+                    // convert to msec
+                    // subtract local time zone offset
+                    // get UTC time in msec
+                    var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+
+                    // create new Date object for different city
+                    // using supplied offset
+                    var nd = new Date(utc + (3600000*offset));
+
+                    var dues, choice, cnt, idk, given, diff;
+
+                    // due
+                    if(room.details.due && room.details.due.length>0) {
+                        dues = room.details.due;
+                        choice = "**Upcoming due:**  \n";
+                        cnt = 0;
+                        for(idk= 0; idk<dues.length; idk++) {
+                            given = new Date(dues[idk].time);
+                            diff = given.getTime() - nd.getTime();
+                            //console.log('TIME DIFF >>> ' + diff);
+                            if(diff >= 0 && diff<=86400000)
+                            {
+                                cnt++;
+                                choice += "**"+ cnt + ". " + dues[idk].name +"**  \n"+dues[idk].description+"  \n"+"Deadline: "+dues[idk].time+"  \n";
+                            }
+                        }
+
+                        if(cnt>0) {
+                            delever = true;
+                            notice+= choice;
+                        }
+                    }
+                    // exam
+                    if(room.details.exam && room.details.exam.length>0) {
+                        dues = room.details.exam;
+                        choice += "  \n**Upcoming exams:**  \n";
+                        cnt = 0;
+                        for(idk= 0; idk<dues.length; idk++) {
+                            given = new Date(dues[idk].time);
+                            diff = given.getTime() - nd.getTime();
+                            //console.log('TIME DIFF >>> ' + diff);
+                            if(diff >= 0 && diff<=86400000)
+                            {
+                                cnt++;
+                                choice += "**"+ cnt + ". " + dues[idk].name +"**  \n"+dues[idk].description+"  \n"+"Date: "+dues[idk].time+"  \n";
+                            }
+                        }
+
+                        if(cnt>0) {
+                            delever = true;
+                            notice+= choice;
+                        }
+                    }
+                    // event
+                    if(room.details.event && room.details.event.length>0) {
+                        dues = room.details.event;
+                        choice += "  \n**Upcoming events:**  \n";
+                        cnt = 0;
+                        for(idk= 0; idk<dues.length; idk++) {
+                            given = new Date(dues[idk].time);
+                            diff = given.getTime() - nd.getTime();
+                            //console.log('TIME DIFF >>> ' + diff);
+                            if(diff >= 0 && diff<=86400000)
+                            {
+                                cnt++;
+                                choice += "**"+ cnt + ". " + dues[idk].name +"**  \n"+dues[idk].description+"  \n"+"Scheduled: "+dues[idk].time+"  \n";
+                            }
+                        }
+
+                        if(cnt>0) {
+                            delever = true;
+                            notice+= choice;
+                        }
+                    }
+
+                    //console.log(channel.id+"\n"+token);
+                    if(delever) {
+                        var post_data = JSON.stringify({
+                            roomId: room.id,
+                            text: notice,
+                            markdown: notice
+                        });
+
+                        // An object of options to indicate where to post to
+                        var post_options = {
+                            host: 'api.ciscospark.com',
+                            path: '/v1/messages',
+                            method: 'POST',
+                            headers: {
+                                'Authorization' : 'Bearer ' + token,
+                                'Content-Type': 'application/json; charset=utf-8',
+                            }
+                        };
+
+                        var req = https.request(post_options, function (response) {
+                            var chunks = [];
+                            response.on('data', function (chunk) {
+                                chunks.push(chunk);
+                            });
+                            response.on("end", function () {
+                                switch (response.statusCode) {
+                                    case 200:
+                                        //console.log("meha: "+"notifier: 200");
+                                        break; // we're good, let's proceed
+
+                                    case 401:
+                                        console.log("meha: "+"notifier: Spark authentication failed: 401, bad token");
+                                        return;
+
+                                    default:
+                                        console.log("meha: "+"notifier: status code: " + response.statusCode);
+                                        return;
+                                }
+
+                                // TODO: Robustify by checking the payload format
+                            });
+                        });
+
+                        // post the data
+                        req.on('error', function(err) {
+                            console.log("meha: "+"notifier: error: " + err);
+                        });
+
+                        req.write(post_data);
+                        req.end();
+                    }
+
+                });
             });
-        }
-    });
-} else {
+        }, 86400000)
 
-}*/
+        // done: never :v
+        // postMessage(ev.data + " DONE B|");
+    };
+});
 
+worker.onmessage = function (ev) {
+    console.log("post: "+ ev.data);
+    worker.terminate();
+};
+
+const util = require('util');
+// JSON.stringify(util.inspect(controller))
+worker.postMessage("go");

@@ -6,4 +6,7 @@ module.exports = function(controller) {
     controller.hears(['thanks', 'thank you'], 'direct_message', function(bot, message) {
         bot.reply(message, "Happy to help 😃");
     });
+    controller.hears(['ok', 'okay', 'got it'], 'direct_message', function(bot, message) {
+        bot.reply(message, "Alright 😃");
+    });
 };

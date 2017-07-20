@@ -316,7 +316,7 @@ function roomSelected(controller, bot, convo, method, opt, rooms) {
                         // convert to msec
                         // subtract local time zone offset
                         // get UTC time in msec
-                        var utc = d.getTime() - (d.getTimezoneOffset() * 60000);
+                        var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
 
                         // create new Date object for different city
                         // using supplied offset
