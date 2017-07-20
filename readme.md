@@ -28,14 +28,8 @@ This bot is built on top of the starter pack of [bot-kit](https://github.com/how
 All the actions this bot can perform are in `skills/` folder. The main bot application will automatically include any files placed there.
 
 A skill module should be in the format:
-
 ```
 module.exports = function(controller) {
-
     // add event handlers to controller
-    // such as hears handlers that match triggers defined in code
-    // or controller.studio.before, validate, and after which tie into triggers
-    // defined in the Botkit Studio UI.
-
 }
 ```
